@@ -1,5 +1,5 @@
 === Provide Support Live Chat ===
-Contributors: t.laskin
+Contributors: providesupport
 Tags: provide support, providesupport, chat, live chat, live chat software, live chat system, live chat button, chat button, live chat link, chat link, live help, live support, customer service, customer support, live customer support, live customer help, live customer service, plugin, widget, sidebar, shortcode
 Requires at least: 3.3
 Tested up to: 3.6
