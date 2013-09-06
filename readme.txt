@@ -1,6 +1,6 @@
 === Provide Support Live Chat ===
 Contributors: t.laskin
-Tags: provide support, providesupport, chat, live chat, live help, live support, customer service, customer support, live customer support, live customer help, live customer service, plugin, widget, sidebar, shortcode
+Tags: provide support, providesupport, chat, live chat, live chat software, live chat system, live chat button, chat button, live chat link, chat link, live help, live support, customer service, customer support, live customer support, live customer help, live customer service, plugin, widget, sidebar, shortcode
 Requires at least: 3.3
 Tested up to: 3.6
 Stable tag: trunk
@@ -9,21 +9,21 @@ This plugin will help you to add your Provide Support Live Chat button to your W
 
 == Description ==
 
-From now on [Provide Support] (http://www.providesupport.com/) can be easily integrated with WordPress websites 
+From now on Provide Support (http://www.providesupport.com/) live chat can be easily integrated with WordPress websites 
 with help of a new Provide Support Live Chat plugin for WordPress. Integration process will take a couple of minutes 
-and will require minimum efforts. It's a simple matter of installing, enabling and positioning Live Chat button.
+and will require minimum efforts. It's a simple matter of installing, enabling and positioning live chat button.
 
 **The following types of WordPress integrations are available**
 
-* Adding Live Chat button to a sidebar
+* Adding live chat button to a sidebar
 * Placing a chat button to a fixed position on a browser window (the best solution for those websites which have no sidebar)
-* Ability to use your custom Live Chat icons images hosted on your server
-* Adding a text chat link to a sidebar or a fixed position on a browser window
-* Flexible options for chat button or chat link displaying (on specific pages, posts etc.)
+* Ability to use your custom live chat icons images hosted on your server
+* Adding a text live chat link to a sidebar or a fixed position on a browser window
+* Flexible options for the live chat chat button or chat link displaying (on specific pages, posts etc.)
 * Ability to utilize shortcodes is the best option for advanced users and will let you place the chat button anywhere on the website. `[providesupport]` shortcode can be used for showing the button or link within the posts or pages and `<?php echo do_shortcode ('[providesupport]') ?>` can be utilized for integration with the website source directly and will let adding the button or link to some specific position on the page
 
-Provide Support Live Chat plugin enables you to monitor the whole website no matter how many pages contain the chat button or link 
-and will give a possibility to follow visitors in real time and proactively invite them to join Live Chat sessions. 
+Provide Support Live Chat plugin enables you to monitor the whole website no matter how many pages contain the live chat button or link 
+and will give a possibility to follow visitors in real time and proactively invite them to join live chat sessions. 
 
 **About Provide Support**
 
