@@ -9,7 +9,7 @@ Author URI: http://www.providesupport.com
 update_option('ProvideSupport plugin version','1.0');
 class f7config{
 	public static $UCNAME = 'Provide Support Live Chat';
-	public static $PLUGINFOLDER = 'chatbutton';
+	public static $PLUGINFOLDER = 'provide-support-live-chat';
 	public static $SHORTCODE = 'providesupport';
 	}
 	
