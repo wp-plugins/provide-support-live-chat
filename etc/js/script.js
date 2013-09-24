@@ -486,8 +486,22 @@ $(document).ready(function(){
 		f7accc.md5 = CryptoJS.MD5(f7acc.pass)+'';
 		accountInfo = '';
 		accountInfo += 'Connected to account : ';
-		accountInfo += f7accc.login;
-		accountInfo += '<br /><a target="_blank" href = "https://admin.providesupport.com/view/my-account/dashboard" style="text-decoration: none">Visit your account Control Panel on www.providesupport.com wesite</a>';
+		accountInfo += '<b>' + f7accc.login + '</b>';
+		if(f7acc.type == 'existing'){	
+			accountInfo += '<br /><br /><div id="f7oldaccountDetails">To go online and start answering chat requests, please install the <a target="_blank" href = "http://www.providesupport.com/downloads/index.html?utm_source=wp-plugin&utm_medium=settings&utm_campaign=Plugins" style="text-decoration: none">Operator Console</a> ';
+			accountInfo += 'and login with the credentials available on your account <a target="_blank" href="https://admin.providesupport.com/view/my-account/operators-and-departments?utm_source=wp-plugin&utm_medium=settings&utm_campaign=Plugins" style="text-decoration: none">Operators and Departments</a> page.';
+			accountInfo += '<br />To customize your live chat appearance, please use available settings in your account <a target="_blank" href = "https://admin.providesupport.com/view/my-account/dashboard?utm_source=wp-plugin&utm_medium=settings&utm_campaign=Plugins" style="text-decoration: none">Control Panel</a>.';
+			accountInfo += '</div>';
+		}
+		if(f7acc.type == 'new'){		
+			accountInfo += '<br /><br /><div id="f7newaccountDetails">To start using the live chat service and appear online please install the <a target="_blank" href = "http://www.providesupport.com/downloads/index.html?utm_source=wp-plugin&utm_medium=settings&utm_campaign=Plugins" style="text-decoration: none">Operator Console</a> ';
+			accountInfo += 'and login with the following credentials:';
+			accountInfo += '<br /><br />Account Name: <b>' + f7acc.name + '</b>';
+			accountInfo += '<br />Operator Login: <b>' + f7acc.name + '</b>';
+			accountInfo += '<br />Operator Password: <b>' + f7acc.pass + '</b>';
+			accountInfo += '<br /><br />To customize your live chat appearance and configure other settings, please use your account <a target="_blank" href = "https://admin.providesupport.com/action/main/company/company-login?login=' + f7acc.name + '&password=' + f7acc.pass + '" style="text-decoration: none">Control Panel</a>.';
+			accountInfo += '</div>';
+		}
 		accountInfo += '<br /><div id="f7anotherAccount" style="margin:5px auto;width:285px;">Connect to another Provide Support account</div>';
 		$('#f7accountInfo').html(accountInfo);
 		$('#f7anotherAccount').on('click',function(){
@@ -557,6 +571,7 @@ $(document).ready(function(){
 				//accSet.companyPassword = CryptoJS.MD5(f7acc.pass)+'';
 				accSet.companyPassword = f7acc.pass;
 				accSet.email = f7acc.mail;
+				accSet.caller = 'wordpess-plugin-1.1';
 				$.ajax({
 					url : 'https://www.providesupport.com/api/account/v1/companies/?method=post',				
 					dataType : 'jsonp',

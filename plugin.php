@@ -2,16 +2,28 @@
 /*
 Plugin Name: Provide Support Live Chat
 Description: This plugin allows adding Provide Support Live Chat button or text link to your website. It can be added as a widget to your website sidebar, or placed to a fixed position on your browser window, or added directly to your posts or pages with help of shortcode.
-Version: 1.0
+Version: 1.1
 Author: Provide Support, LLC
-Author URI: http://www.providesupport.com
+Author URI: http://www.providesupport.com?utm_source=wp-plugin&utm_medium=list&utm_campaign=Plugins
 */
-update_option('ProvideSupport plugin version','1.0');
+update_option('ProvideSupport plugin version','1.1');
 class f7config{
 	public static $UCNAME = 'Provide Support Live Chat';
 	public static $PLUGINFOLDER = 'provide-support-live-chat';
 	public static $SHORTCODE = 'providesupport';
 	}
+	
+// Adding Settings item to Plugins list - start
+$live_chat_plugin_file = 'provide-support-live-chat/plugin.php';
+add_filter( "plugin_action_links_{$live_chat_plugin_file}", 'live_chat_plugin_action_links', 10, 2 );
+ 
+function live_chat_plugin_action_links( $links, $file ) {
+	$settings_link = '<a href="' . admin_url( 'options-general.php?page=provide-support-live-chat/plugin.php' ) . '">' . __( 'Settings', 'provide-support-live-chat' ) . '</a>';
+	array_unshift( $links, $settings_link );
+ 
+	return $links;
+}	
+// Adding Settings item to Plugins list - end
 	
 $themeFolder=get_bloginfo( 'template_url' );
 $f7s = json_decode(get_option('f7settings'));
@@ -196,7 +208,7 @@ function chatControl(){
 	//$div .= menu_page_url( 'widgets',false );
 	$div .= '<div id="f7main">';
 		$div .= '<div id="f7title">';
-			$div .= 'Welcome to Provide Support Live Chat plugin settings page.<br/>Visit our website <a href="http://www.providesupport.com" target="_blank">www.providesupport.com</a> to find more information about our Live Chat system.';
+			$div .= 'Welcome to Provide Support Live Chat plugin settings page.<br/>Visit our website <a href="http://www.providesupport.com?utm_source=wp-plugin&utm_medium=settings&utm_campaign=Plugins" target="_blank">www.providesupport.com</a> to find more information about our Live Chat system.';
 		$div .= '</div>';
 		$div .= '<div id="f7message">';
 			$div .= '';

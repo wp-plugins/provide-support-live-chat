@@ -14,7 +14,8 @@
 #f7main #f7message,
 #f7main #f7settings,
 #f7main #f7account,
-#f7main #f7accountInfo {
+#f7main #f7accountInfo,
+#f7main #f7newaccountDetails {
   width: 60%;
   margin-top: 5px;
   /*margin-left: 20px;*/
@@ -26,6 +27,14 @@
 }
 #f7main #f7title {
   border: 1px solid lightgrey;
+}
+#f7main #f7newaccountDetails {
+	border: 1px solid rgb(250, 100, 0);
+	padding: 10px;
+}
+#f7main #f7oldaccountDetails {
+	border: 1px solid lightgrey;
+	padding: 5px 0px;
 }
 #f7main #f7message {
   display: none;
