@@ -3,7 +3,7 @@ Contributors: providesupport
 Tags: provide support, providesupport, chat, live chat, live chat software, live chat system, live chat button, chat button, live chat link, chat link, live help, live support, customer service, customer support, live customer support, live customer help, live customer service, plugin, widget, sidebar, shortcode
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: trunk
+Stable tag: 1.2
 
 This plugin will help you to add your Provide Support Live Chat button to your WordPress website. Make one more step to excellent customer service.
 
@@ -97,6 +97,10 @@ Please also check our [FAQ](http://www.providesupport.com/home/faq.html?utm_sour
 Sure, our customer support chat is online 24/7. It's available on our website [http://www.providesupport.com](http://www.providesupport.com/?utm_source=wp-plugin&utm_medium=readme&utm_campaign=Plugins "Live support chat")
 
 == Changelog ==
+
+= 1.2 =
+* Minor fixes
+* New default chat button used for accounts created via plugin
 
 = 1.1 =
 * Improved usability
