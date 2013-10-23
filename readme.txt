@@ -9,7 +9,9 @@ This plugin will help you to add your Provide Support Live Chat button to your W
 
 == Description ==
 
-From now on [Provide Support Live Chat](http://www.providesupport.com/?utm_source=wp-plugin&utm_medium=readme&utm_campaign=Plugins "Provide Support Live Chat") can be easily integrated with WordPress websites with help of a new Provide Support Live Chat plugin for WordPress. Integration process will take a couple of minutes and will require minimum efforts. It's a simple matter of installing, enabling and positioning live chat button.
+From now on [Provide Support Live Chat](http://www.providesupport.com/?utm_source=wp-plugin&utm_medium=readme&utm_campaign=Plugins "Provide Support Live Chat") 
+can be easily integrated with WordPress websites with help of a new Provide Support Live Chat plugin for WordPress. Integration process will take a couple of minutes 
+and will require minimum efforts. It's a simple matter of installing, enabling and positioning live chat button.
 
 **About Provide Support**
 
@@ -95,6 +97,10 @@ Please also check our [FAQ](http://www.providesupport.com/home/faq.html?utm_sour
 Sure, our customer support chat is online 24/7. It's available on our website [http://www.providesupport.com](http://www.providesupport.com/?utm_source=wp-plugin&utm_medium=readme&utm_campaign=Plugins "Live support chat")
 
 == Changelog ==
+
+= 1.2 =
+* Minor fixes
+* New default chat button used for accounts created via plugin
 
 = 1.1 =
 * Improved usability
