@@ -2,11 +2,11 @@
 /*
 Plugin Name: Provide Support Live Chat
 Description: This plugin allows adding Provide Support Live Chat button or text link to your website. It can be added as a widget to your website sidebar, or placed to a fixed position on your browser window, or added directly to your posts or pages with help of shortcode.
-Version: 1.1
+Version: 1.2
 Author: Provide Support, LLC
 Author URI: http://www.providesupport.com?utm_source=wp-plugin&utm_medium=list&utm_campaign=Plugins
 */
-update_option('ProvideSupport plugin version','1.1');
+update_option('ProvideSupport plugin version','1.2');
 class f7config{
 	public static $UCNAME = 'Provide Support Live Chat';
 	public static $PLUGINFOLDER = 'provide-support-live-chat';
@@ -183,6 +183,7 @@ function f7adminScript(){
 	$accountHash = substr($accountHash,2);
 	$data=array(
 		'ajaxurl'=> admin_url( 'admin-ajax.php' ),
+		'secret'=> wp_create_nonce('$P^RoV%@'), //my
 		'settings' => json_decode(get_option('f7settings')),
 		'pluginsFolder' => plugins_url().'/'.f7config::$PLUGINFOLDER,
 		'accountName'		=> $accountName,
@@ -388,32 +389,57 @@ function chatControl(){
 	}	
 		
 add_action('wp_ajax_setsettings','setSettings');
-add_action('wp_ajax_nopriv_setsettings','setSettings');
+//add_action('wp_ajax_nopriv_setsettings','setSettings');
 
 add_action('wp_ajax_setcode','setCode');
-add_action('wp_ajax_nopriv_setcode','setCode');
+//add_action('wp_ajax_nopriv_setcode','setCode');
 
 add_action('wp_ajax_setaccount','setAccount');
-add_action('wp_ajax_nopriv_setaccount','setAccount');
+//add_action('wp_ajax_nopriv_setaccount','setAccount');
+
+
+function getVarPost($var = ''){
+	
+	return  isset($_POST[$var]) && !empty($_POST[$var]);	
+}
 
 function setAccount(){
-	update_option('f7accountName',stripslashes($_POST['accountName']));
-	update_option('f7accountHash','K9'.stripslashes($_POST['accountHash']));
-	}
+
+	check_ajax_referer('$P^RoV%@', 'secret');
+	
+			update_option('f7accountName',stripslashes($_POST['accountName']));
+			update_option('f7accountHash','K9'.stripslashes($_POST['accountHash']));
+
+			exit;
+		
+		}
+	
 function setSettings(){
-	update_option('f7settings',stripslashes($_POST['settings']));
-	echo var_dump(json_decode(get_option('f7settings')));
-	die();
-	}
+	
+	check_ajax_referer('$P^RoV%@', 'secret'); 
+	
+		update_option('f7settings',stripslashes($_POST['settings']));
+		echo var_dump(json_decode(get_option('f7settings')));
+		
+		exit;
+		
+}
 
 function setCode(){
-	if($_POST['type'] == 'true'){
+	
+	
+	check_ajax_referer('$P^RoV%@', 'secret');
+	
+	if(getVarPost('type')){
+		if($_POST['type'] == 'true'){
 		update_option('f7hiddencode',$_POST['value']);
 		echo get_option('f7hiddencode');	
 	}else{
 		update_option('f7code',$_POST['value']);
 		echo get_option('f7code');
 		}	
-	die();
+	
+	exit;
 	}
+}
 	

@@ -10,6 +10,10 @@ function generateRandomString(length){
 $(document).ready(function(){
 	//console.log('CHAT SCRIPT LOADED');
 	//console.log(f7php);
+	
+	 $('#f7main input').prop('checked',false);
+	
+	
 	var globalDisabled = false;
 	var emulateCount = 0;
 	var requestWidget = false;
@@ -256,6 +260,7 @@ $(document).ready(function(){
 			$(this).removeClass('novalidButton');
 			ajaxData = {
 				action : 'setsettings',
+				secret : f7php.secret,
 				settings : JSON.stringify(f7settings)
 				}
 			$.ajax({
@@ -359,6 +364,7 @@ $(document).ready(function(){
 		value = value || false;
 		ajaxData = {
 			action : 'setcode',
+			secret : f7php.secret,
 			type : type,
 			value : value 
 			}
@@ -505,22 +511,53 @@ $(document).ready(function(){
 		accountInfo += '<br /><div id="f7anotherAccount" style="margin:5px auto;width:285px;">Connect to another Provide Support account</div>';
 		$('#f7accountInfo').html(accountInfo);
 		$('#f7anotherAccount').on('click',function(){
+			
+			
+			func = function(){};
+				
 			ajaxData = {
 				action : 'setaccount',
+				secret : f7php.secret,
 				accountName : '',
 				accountHash : ''
 				}
-			$.ajax({
-				url : f7php.ajaxurl,type : 'POST',
-				data : ajaxData	
-				}).done(function(msg){
-					location.reload();
-					});
+			
+			ajaxSend(ajaxData, func);
+			
+			ajaxData = {
+				action : 'setsettings',
+				secret : f7php.secret,
+				settings : ''
+				}
 				
+			ajaxSend(ajaxData, func);
+					
+			ajaxData = {
+				action : 'setcode',
+				secret : f7php.secret,
+				type : true,
+				value : '' 
+			}
+				
+			ajaxSend(ajaxData, func);			
+			
+			ajaxData = {
+				action : 'setcode',
+				secret : f7php.secret,
+				type : false,
+				value : '' 
+			}
+			
+			func = function(){ location.reload(); };	
+			ajaxSend(ajaxData, func);	
+					
+					
 			});
 		f7opensettings();
+		console.log(f7php.secret);
 		ajaxData = {
 			action : 'setaccount',
+			secret : f7php.secret,
 			accountName : f7accc.login,
 			accountHash : f7acc.pass
 			}
@@ -531,6 +568,27 @@ $(document).ready(function(){
 				//console.log('EX :: '+msg);
 				});
 		}	
+		
+		
+		
+	ajaxSend = function(ajaxData, func){
+	
+	 $.ajax({
+				url : f7php.ajaxurl,
+				type : 'POST',
+				data : ajaxData
+        }).done(function (msg) {
+			func();
+        });
+	
+	}	
+		
+		
+		
+		
+		
+		
+		
 	
 	$('#f7accountSubmit').on('click',function(){
 		accErase();
@@ -571,7 +629,11 @@ $(document).ready(function(){
 				//accSet.companyPassword = CryptoJS.MD5(f7acc.pass)+'';
 				accSet.companyPassword = f7acc.pass;
 				accSet.email = f7acc.mail;
-				accSet.caller = 'wordpess-plugin-1.1';
+				accSet.caller = 'wordpress-plugin-1.2';
+                accSet.accountSettings = {
+											'chatIconOnline': '57/chat-icon-57-online-en.gif', 
+											'chatIconOffline': '57/chat-icon-57-offline-en.gif'
+										 }
 				$.ajax({
 					url : 'https://www.providesupport.com/api/account/v1/companies/?method=post',				
 					dataType : 'jsonp',
