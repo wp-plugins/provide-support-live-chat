@@ -10,9 +10,14 @@ function generateRandomString(length){
 $(document).ready(function(){
 	//console.log('CHAT SCRIPT LOADED');
 	//console.log(f7php);
-	
+
 	 $('#f7main input').prop('checked',false);
 	
+	//fixed 
+	var newExisting = false;
+	var autoLogin = false;
+	var setAccount = false;
+	//fixed
 	
 	var globalDisabled = false;
 	var emulateCount = 0;
@@ -23,8 +28,18 @@ $(document).ready(function(){
 		if(f7php.accountName != '' && f7php.accountHash != ''){
 			$('.f7fields:eq(0) > .f7field > input').val(f7php.accountName);
 			$('.f7fields:eq(1) > .f7field > input').val(f7php.accountHash);
+			
+			//fixed
+			autoLogin = true;
+			//fixed
+			
 			setTimeout(function(){$('#f7accountSubmit').trigger('click');},500);
-			}
+			}else{
+				
+				//fixed	
+				autoLogin = false;
+				//fixed
+				}
 		}();
 	f7emulate = function(obj,prop){
 		emulateCount++;
@@ -115,7 +130,11 @@ $(document).ready(function(){
 	
 	var f7message = $('#f7message');
 	var f7messageFlag = false;
-	setInterval(function(){checkMessage()},1000);
+	
+	//fixed
+	idInterval = setInterval(function(){checkMessage()},1000);
+	//fixed
+	
 	checkMessage = function (){		
 		if(f7message.html()!='' && !f7messageFlag){
 			f7messageFlag = true;
@@ -213,7 +232,7 @@ $(document).ready(function(){
 			}
 		//if(!validation) alert(validation);
 		}
-	validate2 = function (){
+	validate2 = function (number){
 		validation2 = true;
 		$('.f7fields > .f7field > input').removeClass('novalid');
 		valid('.f7fields:eq(0) > .f7field > input',true);
@@ -227,7 +246,7 @@ $(document).ready(function(){
 				}
 		valid('.f7fields:eq(1) > .f7field > input',true);
 		pass = $('.f7fields:eq(1) > .f7field > input').val();
-		if(pass.length > 20) {validation2 = false;$('.f7fields:eq(1) > .f7field > input').addClass('novalid');textMessage('The account password should contain no more than 20 characters.','warning');} 
+		if(pass.length > number) {validation2 = false;$('.f7fields:eq(1) > .f7field > input').addClass('novalid');textMessage('The account password should contain no more than 20 characters.','warning');} 
 		if(f7acc.type == 'new') {
 				valid('.f7fields:eq(2) > .f7field > input',true);
 				pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
@@ -274,12 +293,44 @@ $(document).ready(function(){
 			
 			var json = {};
 			json.hash = generateRandomString(4);
-			json.locale = location.language || 'ru';
+			json.locale = location.language || 'en'; // fixed 'ru';
 			json.fixed = false;
 			json.codeType = 'script';
 			json.appearance = 'graphics';
 			json.companyLogin = f7accc.login;
 			json.companyPasswordMD5Hash = f7accc.md5;
+			
+			//fixed
+			json.fixed = f7settings.buttonLocation == 'fixed' ? true : false;
+            json.fixedPosition = {
+				"horizontal": {
+                        "value":f7settings.buttonLocationHorizontalValue,
+                        "units":f7settings.buttonLocationHorizontalBy,
+                        "startAt":f7settings.buttonLocationHorizontalFrom
+                },
+                "vertical": {
+                        "value":f7settings.buttonLocationVerticalValue,
+                        "units":f7settings.buttonLocationVerticalBy,
+                        "startAt":f7settings.buttonLocationVerticalFrom
+                }
+			};
+            
+            
+            if(autoLogin == true){
+				json.companyPasswordMD5Hash = f7acc.pass;
+            }else{
+				if(setAccount == true){
+					json.companyPasswordMD5Hash = f7acc.pass;		
+			//json.companyPasswordMD5Hash = CryptoJS.MD5(f7acc.pass)+'';		
+			}
+			
+            if(newExisting == true){
+				json.companyPasswordMD5Hash = f7acc.pass;
+			}
+			}
+			
+			//fixed
+			
 			var f7url = new Object();
 			f7url.hidden = 'http://www.providesupport.com/api/chat-button/v1/get-code';
 			f7url.text = 'http://www.providesupport.com/api/chat-button/v1/get-code';
@@ -338,26 +389,50 @@ $(document).ready(function(){
 	hideshow('#buttonAvailablePages','.settingInt');
 	hideshow('input[name=optionPages]','#selectPages');
 	
-	requestCode = function (json,url,format){
-		format = format || false;
-		url = location.protocol + '//www.providesupport.com/api/chat-button/v1/get-code';
-		$.ajax({
-			type : 'GET', url : url,
-			dataType : 'jsonp',
-			contentType : "application/json",
-			data : {
-				jsonParam: JSON.stringify(json)
-			},
-			async: false,
-			success : function (msg) {
-				//console.log(msg.code);
-				if(!format) {
-					$('#f7livePreview').html('Your live chat link example: <br />'+msg.code);
-				}
-				setCode(msg.code, format);
-				}
-			});
-		}
+	requestCode = function (json, url, format) {
+		
+        format = format || false;
+        url = location.protocol + '//www.providesupport.com/api/chat-button/v1/get-code';
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'jsonp',
+            contentType: "application/json",
+            data: {
+                jsonParam: JSON.stringify(json)
+            },
+            async: false,
+            success: function (msg) {
+                
+               // if (!format) {
+               //     $('#f7livePreview').html('Your live chat link example: <br />' + msg.code);
+               // }
+                setCode(msg.code, format);
+            }
+        });
+        
+        json.fixed = false;
+        
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'jsonp',
+            contentType: "application/json",
+            data: {
+                jsonParam: JSON.stringify(json)
+            },
+            async: false,
+            success: function (msg) {
+				
+				//console.log(msg);
+                
+                if (!format) {
+                    $('#f7livePreview').html('Your live chat link example: <br />' + msg.code);
+                }
+               
+            }
+        });
+    }
 	
 	setCode = function (value, type) {
 		type = type || false;
@@ -489,7 +564,25 @@ $(document).ready(function(){
 		}
 	f7login = function (){
 		f7accc.login = f7acc.name;
-		f7accc.md5 = CryptoJS.MD5(f7acc.pass)+'';
+		
+		//fixed
+		//f7accc.md5 = CryptoJS.MD5(f7acc.pass)+'';
+		if(newExisting == true){ 
+			var newPass = f7acc.pass;
+			f7acc.pass = CryptoJS.MD5(f7acc.pass)+'';
+			f7accc.md5 = CryptoJS.MD5(f7acc.pass) + '';
+		}
+		
+		if(setAccount == true){
+			f7acc.pass = CryptoJS.MD5(f7acc.pass)+'';
+		}
+		//fixed
+		
+		
+		
+		
+		
+		
 		accountInfo = '';
 		accountInfo += 'Connected to account : ';
 		accountInfo += '<b>' + f7accc.login + '</b>';
@@ -504,11 +597,11 @@ $(document).ready(function(){
 			accountInfo += 'and login with the following credentials:';
 			accountInfo += '<br /><br />Account Name: <b>' + f7acc.name + '</b>';
 			accountInfo += '<br />Operator Login: <b>' + f7acc.name + '</b>';
-			accountInfo += '<br />Operator Password: <b>' + f7acc.pass + '</b>';
+			accountInfo += '<br />Operator Password: <b>' + newPass + '</b>';
 			accountInfo += '<br /><br />To customize your live chat appearance and configure other settings, please use your account <a target="_blank" href = "https://admin.providesupport.com/action/main/company/company-login?login=' + f7acc.name + '&password=' + f7acc.pass + '" style="text-decoration: none">Control Panel</a>.';
 			accountInfo += '</div>';
 		}
-		accountInfo += '<br /><div id="f7anotherAccount" style="margin:5px auto;width:285px;">Connect to another Provide Support account</div>';
+		accountInfo += '<br /><div id="f7anotherAccount" style="margin:5px auto;width:320px;">Connect to another Provide Support account</div>';
 		$('#f7accountInfo').html(accountInfo);
 		$('#f7anotherAccount').on('click',function(){
 			
@@ -554,7 +647,7 @@ $(document).ready(function(){
 					
 			});
 		f7opensettings();
-		console.log(f7php.secret);
+		//console.log(f7php.secret);
 		ajaxData = {
 			action : 'setaccount',
 			secret : f7php.secret,
@@ -593,13 +686,39 @@ $(document).ready(function(){
 	$('#f7accountSubmit').on('click',function(){
 		accErase();
 		accGrub();
-		validate2();
+		
+		//fixed
+		if(autoLogin == true){
+			validate2(32);
+		}else{
+			validate2(20);
+		}
+		//validate2();
+		//fixed
+		
 		if(validation2){
 			$('#f7accountSubmit').append('<img id="accountWait" style="position:absolute;top:-2px;right:-38px;" src="'+f7php.pluginsFolder+'/etc/img/wait.gif" width="30px" height="30px">');
 			var accSet = {}		
 			if(f7acc.type == 'existing'){
-				url = 'https://www.providesupport.com/api/account/v1/companies/' + f7acc.name+'?companyLogin='+f7acc.name+'&companyPasswordMD5Hash='+CryptoJS.MD5(f7acc.pass);
+				
+				
+				//fixed
+				//url = 'https://www.providesupport.com/api/account/v1/companies/' + f7acc.name+'?companyLogin='+f7acc.name+'&companyPasswordMD5Hash='+CryptoJS.MD5(f7acc.pass);
+				
+				
+				var siteUrl = 'https://www.providesupport.com/api/account/v1/companies/';
+				var companyLogin = '?companyLogin=';
+				var companyPasswords = '&companyPasswordMD5Hash=';
+				
+				if(autoLogin == true){
+				url = siteUrl + f7acc.name + companyLogin + f7acc.name + companyPasswords + f7acc.pass;
+				}else{
+				url = siteUrl + f7acc.name + companyLogin + f7acc.name + companyPasswords + CryptoJS.MD5(f7acc.pass);
+				}
+				//fixed
+				//console.log(autoLogin);
 				//console.log(url);
+				
 				$.ajax({
 					type : 'GET', url : url,
 					dataType : 'jsonp',
@@ -607,7 +726,26 @@ $(document).ready(function(){
 					async: false,
 					success : function (msg) {
 						//console.log(msg);
-						if(typeof msg.company != 'undefined') {f7login();}
+						if(typeof msg.company != 'undefined') {
+							
+							//fixed
+							f7message.slideUp('fast');
+							clearInterval(idInterval);
+							
+							newExisting = false;
+							
+							if(autoLogin == false){
+								setAccount = true;
+							}else{
+								setAccount = false;
+								}
+							//fixed
+							
+							f7login();
+							
+							
+							
+							}
 						if(msg.error == 'incorrect-password-md5-hash') {textMessage('Incorrect password', 'warning');	}		
 						else if(msg.error == 'no-such-company') {textMessage(msg.errorDescription, 'warning');}
 							else{
@@ -629,11 +767,7 @@ $(document).ready(function(){
 				//accSet.companyPassword = CryptoJS.MD5(f7acc.pass)+'';
 				accSet.companyPassword = f7acc.pass;
 				accSet.email = f7acc.mail;
-				accSet.caller = 'wordpress-plugin-1.2';
-                accSet.accountSettings = {
-											'chatIconOnline': '57/chat-icon-57-online-en.gif', 
-											'chatIconOffline': '57/chat-icon-57-offline-en.gif'
-										 }
+				accSet.caller = 'wordpess-plugin-1.1';
 				$.ajax({
 					url : 'https://www.providesupport.com/api/account/v1/companies/?method=post',				
 					dataType : 'jsonp',
@@ -644,6 +778,16 @@ $(document).ready(function(){
 						//console.log(msg);
 						if(msg.error == 'duplicate-company-login') {textMessage('Account name "'+f7acc.name+'" is taken','warning')}
 						else if(msg.result == 'success'){
+							
+							
+							
+							//fixed 								
+							f7message.slideUp('fast');
+							clearInterval(idInterval);
+							
+							newExisting = true;
+							//fixed 
+														
 							f7login();
 							}else{
 								if(msg.errorDescription != ''){
@@ -652,7 +796,7 @@ $(document).ready(function(){
 									textMessage(msg.error,'warning')	
 									}
 								}
-						$('#accountWait').remove()();
+						$('#accountWait').remove();
 						}
 					}).done(function(){$('#accountWait').remove();});
 				}
