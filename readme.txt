@@ -2,8 +2,8 @@
 Contributors: providesupport
 Tags: provide support, providesupport, chat, live chat, live chat software, live chat system, live chat button, chat button, live chat link, chat link, live help, live support, customer service, customer support, live customer support, live customer help, live customer service, plugin, widget, sidebar, shortcode
 Requires at least: 3.3
-Tested up to: 3.6
-Stable tag: 1.2
+Tested up to: 3.7.1
+Stable tag: 1.3.2
 
 This plugin will help you to add your Provide Support Live Chat button to your WordPress website. Make one more step to excellent customer service.
 
@@ -92,11 +92,23 @@ and [Screenshots](http://www.providesupport.com/screenshots/index.html?utm_sourc
 Sure. Our user manual is available at [http://www.providesupport.com/manual/](http://www.providesupport.com/manual/?utm_source=wp-plugin&utm_medium=readme&utm_campaign=Plugins "Live chat user manual"). 
 Please also check our [FAQ](http://www.providesupport.com/home/faq.html?utm_source=wp-plugin&utm_medium=readme&utm_campaign=Plugins "Frequently Asked Questions").
 
+= Can I use this live chat system on any website or on a WordPress-based only? = 
+
+The system can be used on any website. The only difference is that you will need to add the chat button code to your website source manually, not using a plugin.
+
+= Do you have any reviews from your customers I could check? =
+
+Sure. Please check [Testimonials](http://www.providesupport.com/product/testimonials.html?utm_source=wp-plugin&utm_medium=readme&utm_campaign=Plugins) our clients sent us.
+
 = I haven't found information I need on your website. Do you provide any live support along with your system? =
 
 Sure, our customer support chat is online 24/7. It's available on our website [http://www.providesupport.com](http://www.providesupport.com/?utm_source=wp-plugin&utm_medium=readme&utm_campaign=Plugins "Live support chat")
 
 == Changelog ==
+
+= 1.3 = 
+* Improved Chat Invitation functionality
+* FAQ updated
 
 = 1.2 =
 * Minor fixes
