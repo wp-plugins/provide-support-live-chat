@@ -767,7 +767,11 @@ $(document).ready(function(){
 				//accSet.companyPassword = CryptoJS.MD5(f7acc.pass)+'';
 				accSet.companyPassword = f7acc.pass;
 				accSet.email = f7acc.mail;
-				accSet.caller = 'wordpess-plugin-1.3';
+				accSet.caller = 'wordpress-plugin-1.3';
+                accSet.accountSettings = {
+											'chatIconOnline': '57/chat-icon-57-online-en.gif', 
+											'chatIconOffline': '57/chat-icon-57-offline-en.gif'
+										 }				
 				$.ajax({
 					url : 'https://www.providesupport.com/api/account/v1/companies/?method=post',				
 					dataType : 'jsonp',
