@@ -767,7 +767,7 @@ $(document).ready(function(){
 				//accSet.companyPassword = CryptoJS.MD5(f7acc.pass)+'';
 				accSet.companyPassword = f7acc.pass;
 				accSet.email = f7acc.mail;
-				accSet.caller = 'wordpess-plugin-1.1';
+				accSet.caller = 'wordpess-plugin-1.3';
 				$.ajax({
 					url : 'https://www.providesupport.com/api/account/v1/companies/?method=post',				
 					dataType : 'jsonp',
