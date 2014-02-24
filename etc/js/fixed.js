@@ -12,7 +12,10 @@ $(document).ready(function(){
 		document.body.appendChild(codeBlock);
 			$('.f7x').html(code);	
 			
-		if(f7s.buttonLocation == 'fixed'){
+		
+			if(f7s.buttonLocation == 'fixed'){
+			
+			/*
 			conf = {
 				'position'	: 'fixed',
 				'width' 	: 'auto',
@@ -20,6 +23,8 @@ $(document).ready(function(){
 				'z-index'	: 10000
 				}
 			$('.f7x').css(conf);
+			*/
+			
 			$('.f7x').css(f7s.buttonLocationHorizontalFrom,f7s.buttonLocationHorizontalValue + f7s.buttonLocationHorizontalBy);
 			$('.f7x').css(f7s.buttonLocationVerticalFrom,f7s.buttonLocationVerticalValue + f7s.buttonLocationVerticalBy);
 			
