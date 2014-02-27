@@ -198,9 +198,5 @@
 	opacity:.9;	
 	}
 #f7main #f7submit:hover{opacity:1;}
-#f7waiting{
-	width:30px;
-	height:30px;
-	background-image:url('../img/wait.gif');
-	}
+
 .f7r{margin-right:2px !important;margin-left:1px !important;}
