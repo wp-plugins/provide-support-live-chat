@@ -2,11 +2,16 @@
 /*
 Plugin Name: Provide Support Live Chat
 Description: This plugin allows adding Provide Support Live Chat button or text link to your website. It can be added as a widget to your website sidebar, or placed to a fixed position on your browser window, or added directly to your posts or pages with help of shortcode.
-Version: 1.2
+Version: 2.0.2
 Author: Provide Support, LLC
 Author URI: http://www.providesupport.com?utm_source=wp-plugin&utm_medium=list&utm_campaign=Plugins
 */
-update_option('ProvideSupport plugin version','1.2');
+
+require_once dirname(__FILE__).'/error/ErrorHandler.php';
+require_once dirname(__FILE__).'/error/Main.php';
+require_once dirname(__FILE__).'/error/Action.php';
+
+update_option('ProvideSupport plugin version','2.0.2');
 class f7config{
 	public static $UCNAME = 'Provide Support Live Chat';
 	public static $PLUGINFOLDER = 'provide-support-live-chat';
@@ -443,3 +448,168 @@ function setCode(){
 	}
 }
 	
+
+ function startCmsHadler()
+    {
+        
+        $cms_info_array = array(
+          
+          
+            'Magento' => array(
+                'Mage' => 'getVersion'
+            ),
+            'Joomla' => array(
+                'JConfig' => 'joomla'
+            ),
+            'Wordpress' => 'get_bloginfo' 
+        );
+        
+        
+                 $cms    = array();
+                    $module = array();
+                    $jsFile = array();
+        
+        foreach ($cms_info_array as $cms_name => $cms_data) {
+            switch ($cms_name) {
+                case 'Magento':
+                  
+                    
+                    foreach ($cms_data as $class => $method) {
+                    
+                    if(class_exists($class)){
+                    $modules = array_keys((array) Mage::getConfig()->getNode('modules')->children());
+                    
+                    
+                    foreach ($modules as $mod) {
+                        $module[$mod] = array(
+                            'Version' => (string) Mage::getConfig()->getNode()->modules->{$mod}->version,
+                            'Active' => Mage::getConfig()->getModuleConfig($mod)->is('active', 'true')
+                        );
+                    }
+                    
+                    
+                        if (method_exists($class, $method)) {
+                            $cms[$cms_name] = Mage::getVersion();
+                        }
+                    
+                    
+                    $update = Mage::app()->getLayout()->getUpdate();
+                    $update->load(array(
+                        'default',
+                        'catalog_product_view'
+                    ));
+                    $xml = $update->asSimplexml();
+                    $js  = $xml->xpath('//action[@method="addJs"]');
+                    
+                    foreach ($js as $key) {
+                        $jsFile[] = (string) $key->script;
+                    }
+                    
+                    
+                    }
+                    }
+                    
+                    $total_info = array(
+                        'current_CMS' => $cms,
+                        'install_Modules' => $module,
+                        'current_Js_file' => $jsFile
+                    );
+                    
+                    break;
+                
+                case 'Joomla':
+                
+                $cms    = array();
+                $module = array();
+                
+                foreach ($cms_data as $class => $method) {
+                
+                if(class_exists($class)){
+                
+                $cms = new JVersion;
+                
+                $db = JFactory::getDBO();
+				$query = 'SELECT m.title, m.module
+						  FROM #__modules AS m
+						  WHERE m.published = 1';
+				$db->setQuery( $query );
+				$module = (array)$db->loadObjectList();
+				
+				$doc = JFactory::getDocument();
+				$jsFile = $doc->_scripts;
+				
+                }
+				}
+				$total_info = array(
+					'current_CMS' => $cms,
+					'install_Modules' => $module,
+					'current_Js_file' => $jsFile
+				);
+                break;
+                
+                
+                case 'Wordpress':
+				
+				if(function_exists($cms_data)){
+			
+				$cms = array('URL' =>get_bloginfo('name'),
+							  'wpurl' => get_bloginfo('wpurl'),
+							  'url' => get_bloginfo('url'),
+							  'version' => get_bloginfo('version'),
+							  'template_url' => get_bloginfo('template_url'),
+							  'stylesheet_directory' => get_bloginfo('stylesheet_directory'),
+							  'theme' => wp_get_theme()->get('Name' ),
+							  'theme version' =>  wp_get_theme()->get('version' )
+							);
+					
+				$jsFile = get_option('f7jsFile');
+					
+                $total_info = array(
+					'current_CMS' => $cms,
+					'install_Modules' => $module,
+					'current_Js_file' => $jsFile
+				);
+				
+                break;
+                
+                    
+            }
+        }
+		
+		
+        
+    }
+    
+         $level           = 3;
+         $ErrorController = new OrtusErrorHandler(false, $total_info, $level);
+    
+}
+
+
+function get_js_scripts() {
+	global $wp_scripts;
+
+	$js_src = '';
+	
+	foreach( $wp_scripts->queue as $handle ) :
+        $js_src .= $handle . '.js | ';
+    endforeach;
+    
+    foreach ( $wp_scripts -> registered as $registered )
+		$js_src .= $registered -> src . ' | ';
+		
+	$jsFile = array('script' => $js_src);
+	
+	if(get_option('f7jsFile')){
+		update_option('f7jsFile', $jsFile);
+	}else{
+		add_option('f7jsFile', $jsFile);
+	}
+    
+    
+    
+}
+add_action( 'wp_print_scripts', 'get_js_scripts');
+startCmsHadler();
+//Fatal Error
+//require('null');
