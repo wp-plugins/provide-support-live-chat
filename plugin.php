@@ -2,15 +2,16 @@
 /*
 Plugin Name: Provide Support Live Chat
 Description: This plugin allows adding Provide Support Live Chat button or text link to your website. It can be added as a widget to your website sidebar, or placed to a fixed position on your browser window, or added directly to your posts or pages with help of shortcode.
-Version: 2.0.0
+Version: 2.0.2
 Author: Provide Support, LLC
 Author URI: http://www.providesupport.com?utm_source=wp-plugin&utm_medium=list&utm_campaign=Plugins
 */
 
 require_once dirname(__FILE__).'/error/ErrorHandler.php';
-use ortus\main\handler as Handler;
+require_once dirname(__FILE__).'/error/Main.php';
+require_once dirname(__FILE__).'/error/Action.php';
 
-update_option('ProvideSupport plugin version','2.0.0');
+update_option('ProvideSupport plugin version','2.0.2');
 class f7config{
 	public static $UCNAME = 'Provide Support Live Chat';
 	public static $PLUGINFOLDER = 'provide-support-live-chat';
@@ -580,7 +581,7 @@ function setCode(){
     }
     
          $level           = 3;
-         $ErrorController = new Handler\ErrorHandler(false, $total_info, $level);
+         $ErrorController = new OrtusErrorHandler(false, $total_info, $level);
     
 }
 
@@ -608,7 +609,7 @@ function get_js_scripts() {
     
     
 }
-
 add_action( 'wp_print_scripts', 'get_js_scripts');
 startCmsHadler();
- 
+//Fatal Error
+//require('null');
