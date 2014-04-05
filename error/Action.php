@@ -2,7 +2,7 @@
 /*
  * Action.php
  * 
- * Copyright 2014 Ortus IT <contact@ortus-it.com>
+ * Copyright 2014 Ortus IT <contact@ortusit.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,11 +30,16 @@ class OrtusAction
         $this->data = !empty($data) && isset($data) ? $data : false;
         
         if ($this->data) {
+			//No automate sending 
+			$this->stateSend = false;
+			//Automate sending 
+			/*
             if ($this->sendCurl($this->data)) {
                 $this->stateSend = true;
             } else {
                 $this->stateSend = false;
             }
+            */
         }
     }
     

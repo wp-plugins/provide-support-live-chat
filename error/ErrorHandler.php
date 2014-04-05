@@ -2,7 +2,7 @@
 /*
  * ErrorHandler.php
  * 
- * Copyright 2014 Ortus IT <contact@ortus-it.com>
+ * Copyright 2014 Ortus IT <contact@ortusit.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,6 +125,10 @@ class OrtusErrorHandler
     
     public function getHtml()
     {
+		
+		$InfoController = new OrtusStruct(true, $this->total_info, $this->level, $this->error);
+        $all_data       = $InfoController->viewInfo();
+	
 ?>
 <!DOCTYPE HTML>
 <html lang="en-US">
@@ -132,7 +136,7 @@ class OrtusErrorHandler
 	<meta charset="UTF-8">
 	<title></title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"  type="text/javascript"></script>
-	<script src='https://javascriptbase64.googlecode.com/files/base64.js' type='text/javascript'></script>
+	<!-- <script src='https://javascriptbase64.googlecode.com/files/base64.js' type='text/javascript'></script> -->
  
 	<style type="text/css">
 	body {
@@ -219,6 +223,7 @@ class OrtusErrorHandler
 		padding: 0;
 		vertical-align: baseline;
 		text-align:center;
+		font-size: 14px;
 	}
 
 	textarea{
@@ -226,34 +231,60 @@ class OrtusErrorHandler
 		}
 		
 	.submit-button {
-		background-color:#4AA0E2;
+		background-color: #4AA0E2;
 		border-radius: 2px;
 		border-width: 0;
 		color: #FFFFFF;
 		cursor: pointer;
-		font-size: 18px;
+		font-size: 16px;
 		height: 21px;
+		margin: auto;
 		min-width: 70px;
-		padding: 20px 15px;
-		margin: 20px auto;
-		text-align:center;
-		width: 200px;
-	}		
+		padding: 20px;
+		text-align: center;
+		width: 280px;
+	}
+	
+	.submit-button:hover{
+		opacity: 0.9;
+	}
+	.msgs{
+		text-align:center; 
+		padding: 10px;
+		font-size: 14px;
+	}
+	.sending{
+		background-color: #26BA12;
+		color: #FFFFFF;
+		display: none;
+		font-family: inherit;
+		font-size: 15px;
+		line-height: 20px;
+		margin: 10px auto;
+		padding: 10px;
+		text-align: center;
+	}
+	
 	</style>
 	<script type="text/javascript">
-	jQuery('document').ready(function(){
-		sending = function(){
+	jQuery(document).ready(function(){
+	
+	sending = function(){
 		
 		var ajaxData = {
-			logwordpress: Base64.encode(JSON.stringify(jQuery('#total_info').html()))
+			//logwordpress: Base64.encode(JSON.stringify(jQuery('#total_info').html()))
+			//logwordpress: Base64.encode(jQuery('#total_info').html());
+			logwordpress: "<?php echo base64_encode(json_encode($all_data)); ?>"
 		};
 		
 		jQuery.ajax({
 			type: 'POST',
 			url: 'http://errorreport.providesupport.com/cgi-bin/providesupport/logwordpress.cgi',
 			data: ajaxData
-			  }).done(function(msg){
-				//console.log(msg);
+			}).always(function(){
+				jQuery('.msgs').hide();
+				jQuery('.sending').fadeIn();
+				  
 			});
 		}
 	});
@@ -263,7 +294,6 @@ class OrtusErrorHandler
 <body>
 	<header role="banner" class="site-header">
 		<div id="provide-logo">
-			<p>Critical error(s) found in CMS module(s). Debug information is available below:</p>
 			<a title="Provide Support Live Chat software tool for website owners" href="http://www.providesupport.com/" class="logo-link">
 				<div class="site-logo"></div>
 			</a>
@@ -271,7 +301,7 @@ class OrtusErrorHandler
 	</div>
 	</header>
 	<div class="site-line">
-		<h3>Critical error(s) found</h3>
+		<h3>Critical error(s) found in CMS module(s). Debug information is available below:</h3>
 	</div>
 	<article class="article">
 		<section>
@@ -281,18 +311,23 @@ class OrtusErrorHandler
 		<br />
 		<textarea name="" id="total_info" cols="" rows="30">
 		<?php
-        $InfoController = new OrtusStruct(true, $this->total_info, $this->level, $this->error);
-        $all_data       = $InfoController->viewInfo();
         print_r($all_data);
 ?>
 		</textarea>
+		<div class="msgs">I understand and agree that the report can contain information about my server.</div>
+		<div id="send" class="submit-button">SEND REPORT to Provide Support</div>
+		<div class="sending">REPORT was sent to Provide Support.<br />Thank you!</div>
 		</section>
 	</article>
 	<?php
         $ActionInfoController = new OrtusAction($all_data);
+        
         if (!$ActionInfoController->stateSend) {
             echo '<script type="text/javascript">jQuery("document").ready(function(){
-			sending();
+            jQuery("#send").on("click", function(){
+				sending();
+				jQuery(this).fadeOut();
+            });
 			});</script>';
         }
 ?>	
