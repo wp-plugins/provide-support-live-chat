@@ -107,7 +107,7 @@ Sure, our customer support chat is online 24/7. It's available on our website [h
 == Changelog ==
 
 = 2.0.3 = 
-* Reporting module improved
+* Reporting module improved 
 
 = 2.0.2 = 
 * Old PHP compatibility fix
